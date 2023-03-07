@@ -26,19 +26,19 @@ export default function LoginAdminForm() {
 
   return (
     <>
-      <div className="block p-6 rounded-lg shadow-lg bg-black/60  max-w-xl mt-28 mb-10 w-[350px} p-[60px]">
+      <div className="block p-6 rounded-lg shadow-lg bg-black/60  max-w-xl mt-28 mb-24 w-[600px} pt-[60px] px-[68px] pb-[40px]">
         <form>
           <div className="form-group mb-6">
             <label
               htmlFor="exampleInputEmail2"
-              className="form-label inline-block mb-2 text-white text-3xl font-bold ml-20"
+              className="form-label inline-block mb-2 text-white text-3xl font-bold ml-[60px]"
             >
               Admin
             </label>
             <br />
             <label
               htmlFor="exampleInputEmail2"
-              className="form-label inline-block mb-2 text-white text-2xl font-semibold"
+              className="form-label inline-block mb-4 text-white  text-2xl font-semibold"
             >
               Sign In
             </label>
@@ -94,16 +94,6 @@ export default function LoginAdminForm() {
               </a>
             </div>
           </div>
-
-          <p className="text-gray-500 text-sm  mt-15 text-center">
-            New to Netflix?{' '}
-            <a
-              href="#!"
-              className="text-gray-300 no-underline hover:underline text-sm font-medium transition duration-200 ease-in-out"
-            >
-              Sign Up now.
-            </a>
-          </p>
         </form>
       </div>
     </>
