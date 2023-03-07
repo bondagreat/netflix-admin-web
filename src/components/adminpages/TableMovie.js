@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import img1 from '../../assets/img1.png';
+import img1 from '../../assets/images/img1.png';
 import { BinIcon, FilmIcon, MovieIcon, WriteEditIcon } from '../../images';
 
 import { Link } from 'react-router-dom';

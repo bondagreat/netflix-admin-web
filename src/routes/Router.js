@@ -1,7 +1,9 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ProtectedRoute from '../features/auth/ProtectedRoute';
 import RedirectIfAuthenticate from '../features/auth/RedirectIfAuthenticate';
 import LoginAdminPage from '../pages/LoginAdminPage';
 import AdminManageAccountPage from '../pages/AdminManageAccountPage';
+import AdminManageMoviePage from '../pages/AdminManageMoviePage';
 import AdminTransactionPage from '../pages/AdminTransactionPage';
 
 const router = createBrowserRouter([
@@ -14,16 +16,28 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/',
-    element: <AdminManageAccountPage />,
+    path: '/admin/user',
+    element: (
+      <ProtectedRoute>
+        <AdminManageAccountPage />
+      </ProtectedRoute>
+    ),
   },
   {
-    path: '/adminSeeTransaction',
-    element: <AdminTransactionPage />,
+    path: '/admin/user/transaction',
+    element: (
+      <ProtectedRoute>
+        <AdminTransactionPage />
+      </ProtectedRoute>
+    ),
   },
   {
-    path: '/adminManageMovie',
-    element: <AdminManageMoviePage />,
+    path: '/admin/movie',
+    element: (
+      <ProtectedRoute>
+        <AdminManageMoviePage />
+      </ProtectedRoute>
+    ),
   },
 ]);
 

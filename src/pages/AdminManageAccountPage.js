@@ -1,31 +1,51 @@
 import Brand from '../layouts/Brand';
 import MenuItemRight from '../layouts/MenuItemRight';
-import { HomeLogo, SearchIcon, ArrowLeft, ArrowRight } from '../images';
-import { useState } from 'react';
-import UserList from '../components/admin/UserList';
+import { HomeLogo, SearchIcon } from '../images';
+import { useEffect, useState } from 'react';
+import UserList from '../components/adminpages/UserList';
+import * as adminApi from '../apis/admin-api';
+import SearchForm from '../components/adminpages/SearchForm';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../redux/authSlice';
 
 export default function AdminManageAccountPage() {
-  const [search, setSearch] = useState('');
-  const [pageNum, setPageNum] = useState(5);
+  const [users, setUsers] = useState([]);
+  const [showUser, setShowUser] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useDispatch();
+  const accountListPerPage = 8;
+  const lastIndex = currentPage * accountListPerPage;
+  const firstIndex = lastIndex - accountListPerPage;
+  const ListAccount = showUser.slice(firstIndex, lastIndex);
+  const page = Math.ceil(showUser.length / accountListPerPage);
+  const numbers = [...Array(page + 1).keys()].slice(1);
+  const params = new URLSearchParams(window.location.search);
+  console.log(params.get('back'));
 
-  const handleSearch = () => {
-    setSearch(search);
+  const updateShowUser = (searchUser) => {
+    const userTemp = users.filter((el) => {
+      if (!searchUser) {
+        return null;
+      }
+      return el.email.toLowerCase().includes(searchUser?.toLowerCase());
+    });
+    setShowUser(userTemp);
+    sessionStorage.setItem('searchUser', JSON.stringify(userTemp));
   };
-  const previousPage = () => {
-    if (pageNum > 1) setPageNum(pageNum - 1);
+
+  const fetchUser = async () => {
+    const res = await adminApi.getAllUser();
+    setUsers(res.data.user);
   };
-  const nextPage = () => {
-    setPageNum(pageNum + 1);
-  };
-
-  const data = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-    22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
-  ];
-
-  const totalPage = Math.ceil(data.length / 8);
-
-  const pages = {};
+  useEffect(() => {
+    fetchUser();
+    const userTemp = sessionStorage.getItem('searchUser');
+    console.log(JSON.parse(userTemp));
+    if (params.get('back')) {
+      setShowUser(JSON.parse(userTemp));
+    }
+  }, []);
 
   return (
     <>
@@ -39,10 +59,7 @@ export default function AdminManageAccountPage() {
               <div className="flex items-center flex-row justify-end gap-3 mr-10 mt-8">
                 <MenuItemRight>
                   <SearchIcon />
-                  <input
-                    className="border-2 border-white bg-black text-white"
-                    onChange={handleSearch}
-                  />
+                  <SearchForm updateShowUser={updateShowUser} />
                 </MenuItemRight>
               </div>
             </div>
@@ -55,16 +72,25 @@ export default function AdminManageAccountPage() {
                 <div className="fill-white ">
                   <HomeLogo />
                 </div>
-                <p className="text-white mt-2">Home</p>
+                <Link to="#">
+                  <p className="text-white mt-2">Home</p>
+                </Link>
               </div>
               <div className="pl-11">
-                <p className="text-white mt-2">Users</p>
-                <p className="text-white mt-2">Movies</p>
+                <Link to="/adminManageAccount">
+                  <p className="text-white mt-2">Users</p>
+                </Link>
+                <Link to="/adminManageMovie">
+                  <p className="text-white mt-2">Movies</p>
+                </Link>
               </div>
             </div>
-            <div className="text-white mt-4">
+            <button
+              onClick={() => dispatch(logout())}
+              className="text-white mt-4"
+            >
               <p>Log out</p>
-            </div>
+            </button>
           </div>
           <div className="bg-neutral-500 flex flex-grow flex-col">
             <div className="flex flex-row justify-between">
@@ -93,21 +119,80 @@ export default function AdminManageAccountPage() {
                           <th scope="col" className="px-6 py-4"></th>
                         </tr>
                       </thead>
-                      <UserList />
+                      {ListAccount?.map((el) => (
+                        <UserList
+                          key={el.id}
+                          user={el}
+                          ListAccount={ListAccount}
+                          userTransaction={el.Transactions}
+                        />
+                      ))}
                     </table>
                   </div>
                 </div>
               </div>
               <div className="flex flex-row justify-center mt-14">
-                <div className="fill-white" onClick={previousPage}>
-                  <ArrowLeft />
-                </div>
-                <div className="flex flex-row gap-4 mt-1">
-                  <p className="text-white ">1</p>
-                  {pageNum > 4 && <p className="text-white ">...</p>}
-                </div>
-                <div className="fill-white" onClick={nextPage}>
-                  <ArrowRight />
+                <div className="flex justify-center mt-3">
+                  <nav aria-label="Page navigation example">
+                    <ul className="inline-flex items-center -space-x-px">
+                      <li>
+                        <Link
+                          to="#"
+                          className="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white focus:text-blue-700 focus:bg-blue-100"
+                          onClick={prePage}
+                        >
+                          <span className="sr-only">Previous</span>
+                          <svg
+                            aria-hidden="true"
+                            className="w-5 h-5"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            ></path>
+                          </svg>
+                        </Link>
+                      </li>
+                      {numbers.map((n, i) => (
+                        <li key={i}>
+                          <Link
+                            to="#"
+                            className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white focus:text-blue-700 focus:bg-blue-100"
+                            onClick={() => changeCurrentPage(n)}
+                          >
+                            {n}
+                          </Link>
+                        </li>
+                      ))}
+
+                      <li>
+                        <Link
+                          to="#"
+                          className="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white focus:text-blue-700 focus:bg-blue-100"
+                          onClick={nextPage}
+                        >
+                          <span className="sr-only">Next</span>
+                          <svg
+                            aria-hidden="true"
+                            className="w-5 h-5 "
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                              clipRule="evenodd"
+                            ></path>
+                          </svg>
+                        </Link>
+                      </li>
+                    </ul>
+                  </nav>
                 </div>
               </div>
             </div>
@@ -116,4 +201,20 @@ export default function AdminManageAccountPage() {
       </div>
     </>
   );
+
+  function prePage() {
+    if (currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }
+
+  function changeCurrentPage(id) {
+    setCurrentPage(id);
+  }
+
+  function nextPage() {
+    if (currentPage !== page) {
+      setCurrentPage(currentPage + 1);
+    }
+  }
 }
