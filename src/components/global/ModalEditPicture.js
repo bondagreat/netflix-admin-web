@@ -1,63 +1,107 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Select from 'react-select';
+import useMovie from '../../hooks/useMovie';
 
-export default function ModalEditPicture({ show, setClose }) {
-  const optionsEditMood = [
-    { value: '1', label: 'Adventure' },
-    { value: '2', label: 'Comedies' },
-    { value: '3', label: 'Drama' },
-    { value: '4', label: 'Exiciting' },
-    { value: '5', label: 'Horror' },
-    { value: '6', label: 'Quirky' },
-    { value: '7', label: 'Romantic' },
-    { value: '8', label: 'Swoonworthy' },
-  ];
-  const optionsEditGenres = [
-    { value: '1', label: 'Action' },
-    { value: '2', label: 'Adventure' },
-    { value: '3', label: 'Comedies' },
-    { value: '4', label: 'Horror' },
-    { value: '5', label: 'Hollywood' },
-    { value: '6', label: 'Kids&Family' },
-    { value: '7', label: 'K-Dramas' },
-    { value: '8', label: 'Romance' },
-    { value: '9', label: 'Variety' },
-  ];
-  const optionsEditCasts = [
-    { value: '1', label: 'Jack' },
-    { value: '2', label: 'Jill' },
-    { value: '3', label: 'jimmy' },
-    { value: '4', label: 'John' },
-  ];
-  const optionsEditRate = [
-    { value: '1', label: '7+' },
-    { value: '2', label: '13+' },
-    { value: '3', label: '16+' },
-    { value: '4', label: '18+' },
-  ];
-  const optionsEditLanguage = [{ value: '1', label: 'English' }];
-  const handleOnChange = (value) => {
-    console.log(value);
-  };
+export default function ModalEditPicture({
+  show,
+  setClose,
+  cover,
+  logo,
+  name,
+  release,
+  length,
+  description,
+  movieCast,
+  movieGenre,
+  movieMood,
+}) {
+  const stateMood = useSelector((state) => state.movie.mood);
+  const stateGenres = useSelector((state) => state.movie.genre);
+  const stateCasts = useSelector((state) => state.movie.cast);
+  const stateRate = useSelector((state) => state.movie.age);
+  const stateLanguage = useSelector((state) => state.movie.language);
 
-  const handleSubmitForm = (e) => {
-    e.preventDefault();
-  };
-  const handlePreviewImage = (e) => {
-    setFile(e.target.files[0]);
-  };
-  const [file, setFile] = useState(null);
-  // console.log(show);
-  const handlePreviewImageLogo = (e) => {
-    setFileLogo(e.target.files[0]);
-  };
-  const [fileLogo, setFileLogo] = useState(null);
+  const optionsMood = stateMood.reduce((acc, el, idx) => {
+    acc[idx] = {
+      value: el.id,
+      label: el.name,
+    };
+    return acc;
+  }, []);
 
-  const [title, setTitle] = useState();
-  const [date, setDate] = useState();
-  const [lenght, setLenght] = useState();
-  const [description, setDescription] = useState();
+  const optionsGenres = stateGenres.reduce((acc, el, idx) => {
+    acc[idx] = {
+      value: el.id,
+      label: el.name,
+    };
+    return acc;
+  }, []);
+
+  const optionsCasts = stateCasts.reduce((acc, el, idx) => {
+    acc[idx] = {
+      value: el.id,
+      label: el.name,
+    };
+    return acc;
+  }, []);
+
+  const optionsRate = stateRate.reduce((acc, el, idx) => {
+    acc[idx] = {
+      value: el.id,
+      label: el.name,
+    };
+    return acc;
+  }, []);
+
+  const optionsLanguage = stateLanguage.reduce((acc, el, idx) => {
+    acc[idx] = {
+      value: el.id,
+      label: el.name,
+    };
+    return acc;
+  }, []);
+
+  // useEffect(() => {
+  //   setInput({
+  //     name: name || '',
+  //     release: release || '',
+  //     length: length || '',
+  //     description: description || '',
+  //   });
+  //   setFile(cover);
+  //   setFileLogo(logo);
+  // }, []);
+
+  const {
+    initialInput,
+    input,
+    setInput,
+    genre,
+    setGenre,
+    mood,
+    setMood,
+    cast,
+    setCast,
+    file,
+    setFile,
+    fileLogo,
+    setFileLogo,
+    videoInp,
+    setVideoInp,
+    trailerInp,
+    setTrailerInp,
+    handleChangeInput,
+    handleImage,
+    handleLogo,
+  } = useMovie();
+
+  const handleSubmitForm = async (e) => {
+    try {
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -93,7 +137,7 @@ export default function ModalEditPicture({ show, setClose }) {
                       type="file"
                       id="formFile"
                       name="ImageStyle"
-                      onChange={handlePreviewImage}
+                      onChange={handleImage}
                     />
                   </div>
 
@@ -118,7 +162,7 @@ export default function ModalEditPicture({ show, setClose }) {
                       className="form-control block  px-3 py-1.5   text-sm  font-normal   text-blue-700   bg-white bg-clip-padding   border border-solid border-gray-300  rounded-lg  transition   ease-in-out   m-5   focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                       type="file"
                       id="formFile"
-                      onClick={handlePreviewImageLogo}
+                      onClick={handleLogo}
                     />
                   </div>
                 </div>
@@ -128,7 +172,8 @@ export default function ModalEditPicture({ show, setClose }) {
                       Title:
                     </span>
                     <input
-                      onChange={(e) => setTitle(e.target.value)}
+                      name="name"
+                      onChange={handleChangeInput}
                       className="w-full h-[36px] pl-3  rounded-md border border-slate-400 my-2 text-gray-900"
                       type="text"
                     />
@@ -138,7 +183,8 @@ export default function ModalEditPicture({ show, setClose }) {
                       Release Date:
                     </span>
                     <input
-                      onChange={(e) => setDate(e.target.value)}
+                      name="release"
+                      onChange={handleChangeInput}
                       className="grow h-[36px] pl-3  rounded-md border border-slate-400 mt-1 text-gray-900"
                       type="text"
                     />
@@ -148,7 +194,8 @@ export default function ModalEditPicture({ show, setClose }) {
                       Length:
                     </span>
                     <input
-                      onChange={(e) => setLenght(e.target.value)}
+                      name="length"
+                      onChange={handleChangeInput}
                       className="w-full pl-3 h-[36px] rounded-md border border-slate-400 mt-3 text-gray-900"
                       type="text"
                     />
@@ -161,11 +208,11 @@ export default function ModalEditPicture({ show, setClose }) {
                       </span>
                       <Select
                         isMulti
-                        onChange={handleOnChange}
+                        onChange={(e) => setMood(e)}
                         name="colors"
                         className="basic-multi-select w-full px-3 mt-3 rounded-md text-gray-900 "
                         classNamePrefix="select"
-                        options={optionsEditMood}
+                        options={optionsMood}
                       />
                     </div>
                   </div>
@@ -176,11 +223,11 @@ export default function ModalEditPicture({ show, setClose }) {
                       </span>
                       <Select
                         isMulti
-                        onChange={handleOnChange}
+                        onChange={(e) => setGenre(e)}
                         name="colors"
                         className="basic-multi-select w-full px-3  rounded-md text-gray-900 "
                         classNamePrefix="select"
-                        options={optionsEditGenres}
+                        options={optionsGenres}
                       />
                     </div>
                   </div>
@@ -189,7 +236,8 @@ export default function ModalEditPicture({ show, setClose }) {
                       Description:
                     </span>
                     <input
-                      onChange={(e) => setDescription(e.target.value)}
+                      name="description"
+                      onChange={handleChangeInput}
                       className="w-full h-[36px] pl-3  rounded-md border border-slate-400  mb-1 text-gray-900"
                       type="text"
                     />
@@ -201,10 +249,11 @@ export default function ModalEditPicture({ show, setClose }) {
                         Rate:
                       </span>
                       <Select
+                        name="ageId"
                         id="multiSelection"
                         placeholder="Age"
-                        onChange={handleOnChange}
-                        options={optionsEditRate}
+                        onChange={(e) => setInput({ ...input, ageId: e.value })}
+                        options={optionsRate}
                         className="w-full px-3  rounded-md mt-2 text-gray-900 "
                       />
                     </div>
@@ -216,11 +265,11 @@ export default function ModalEditPicture({ show, setClose }) {
                       </span>
                       <Select
                         isMulti
-                        onChange={handleOnChange}
+                        onChange={(e) => setCast(e)}
                         name="colors"
                         className="basic-multi-select w-full px-3  rounded-md  text-gray-900"
                         classNamePrefix="select"
-                        options={optionsEditCasts}
+                        options={optionsCasts}
                       />
                     </div>
                   </div>
@@ -230,10 +279,13 @@ export default function ModalEditPicture({ show, setClose }) {
                         Language:
                       </span>
                       <Select
+                        name="languageId"
                         id="multiSelection"
                         placeholder="language"
-                        onChange={handleOnChange}
-                        options={optionsEditLanguage}
+                        onChange={(e) =>
+                          setInput({ ...input, languageId: e.value })
+                        }
+                        options={optionsLanguage}
                         className="w-full px-3  rounded-md text-gray-900"
                         styles={{
                           control: (styles) => ({

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import useMovie from '../../hooks/useMovie';
 
 export default function MovieSearchForm({ updateShowMovie }) {
-  const [searchMovie, setSearchMovie] = useState(null);
+  const { searchMovie, setSearchMovie } = useMovie();
 
   const handleChangeSearchMovie = (e) => {
     if (e.target.value === '') {

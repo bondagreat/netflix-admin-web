@@ -1,16 +1,16 @@
 import Brand from '../layouts/Brand';
 import MenuItemRight from '../layouts/MenuItemRight';
-import { HomeLogo, SearchIcon } from '../images';
+import { SearchIcon } from '../images';
 import { TableMovie } from '../components/adminpages/TableMovie';
 import { Link } from 'react-router-dom';
-import * as adminApi from '../apis/admin-api';
 import { useEffect, useState } from 'react';
 import MovieSearchForm from '../components/adminpages/MovieSearchForm';
 import { useDispatch } from 'react-redux';
 import { logout } from '../redux/authSlice';
+import useMovie from '../hooks/useMovie';
 
 export default function AdminManageMoviePage() {
-  const [movies, setMovies] = useState([]);
+  const { movies, fetchMovie } = useMovie();
   const [showMovie, setShowMovie] = useState([]);
   const dispatch = useDispatch();
 
@@ -22,11 +22,6 @@ export default function AdminManageMoviePage() {
       return el.name.toLowerCase().includes(searchMovie?.toLowerCase());
     });
     setShowMovie(movieTemp);
-  };
-
-  const fetchMovie = async () => {
-    const res = await adminApi.getAllMovie();
-    setMovies(res.data.movie);
   };
 
   useEffect(() => {

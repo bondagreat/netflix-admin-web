@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-export default function ModalEditTrailer({ show, setClose }) {
+export default function ModalEditTrailer({ show, setClose, trailer }) {
   const handleSubmitForm = () => {};
   // const { width, height } = props;
 

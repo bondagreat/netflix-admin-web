@@ -15,6 +15,7 @@ export default function CreatePictureForm({ show, setClose }) {
   const stateRate = useSelector((state) => state.movie.age);
   const stateLanguage = useSelector((state) => state.movie.language);
   const { startLoading, stopLoading } = useLoading();
+  const { fetchMovie } = useMovie();
 
   const optionsMood = stateMood.reduce((acc, el, idx) => {
     acc[idx] = {
@@ -119,6 +120,8 @@ export default function CreatePictureForm({ show, setClose }) {
       trailerData.append('input', JSON.stringify(res.data.newMovie.id));
       trailerData.append('video', trailerInp);
       await adminApi.addTrailer(trailerData);
+
+      fetchMovie();
 
       setInput(initialInput);
       setGenre([]);

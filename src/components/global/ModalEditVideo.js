@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function ModalEditVideo({ show, setClose }) {
+export default function ModalEditVideo({ show, setClose, video }) {
   const handleSubmitForm = (e) => {
     e.preventDefault();
   };

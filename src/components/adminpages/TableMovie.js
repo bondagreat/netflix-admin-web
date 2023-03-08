@@ -1,12 +1,7 @@
 import { useState } from 'react';
-import img1 from '../../assets/images/img1.png';
-import { BinIcon, FilmIcon, MovieIcon, WriteEditIcon } from '../../images';
-
 import { Link } from 'react-router-dom';
-import ModalEditPicture from '../global/ModalEditPicture';
-import ModalEditVideo from '../global/ModalEditVideo';
-import ModalEditTrailer from '../global/ModalEditTrailer';
 import CreatePictureForm from '../global/CreatePictureForm';
+import MovieList from './MovieList';
 
 export function TableMovie({ showMovie }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,30 +12,8 @@ export function TableMovie({ showMovie }) {
   const page = Math.ceil(showMovie.length / movieListPerPage);
   const numbers = [...Array(page + 1).keys()].slice(1);
 
-  const [openPicture, setOpenPicture] = useState(false);
-  const [openVideo, setOpenVideo] = useState(false);
-  const [openTrailer, setOpenTrailer] = useState(false);
-
   const [openCreateMovie, setOpenCreateMovie] = useState(false);
 
-  const handleOpenPicture = () => {
-    setOpenPicture(true);
-  };
-  const handleClosePicture = () => {
-    setOpenPicture(false);
-  };
-  const handleOpenVideo = () => {
-    setOpenVideo(true);
-  };
-  const handleCloseVideo = () => {
-    setOpenVideo(false);
-  };
-  const handleOpenTrailer = () => {
-    setOpenTrailer(true);
-  };
-  const handleCloseTrailer = () => {
-    setOpenTrailer(false);
-  };
   const handleOpenCreateMovie = () => {
     setOpenCreateMovie(true);
   };
@@ -94,73 +67,17 @@ export function TableMovie({ showMovie }) {
 
               {/* bodytable */}
               <tbody>
-                {ListMovie.map((e) => (
-                  <tr
-                    key={e.id}
-                    className="border-b transition duration-300 ease-in-out hover:bg-neutral-400 dark:border-neutral-500 dark:hover:bg-neutral-600 hover:bg-opacity-30 text-center text-white"
-                  >
-                    <td className="whitespace-nowrap px-6 py-4 ">{e.id}</td>
-                    <td className="whitespace-nowrap px-6 py-1 w-40">
-                      <img src={e.cover} className="rounded-lg" />
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">{e.name}</td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {e.length.split('.')[0] +
-                        'h' +
-                        ' ' +
-                        e.length.split('.')[1] +
-                        'm'}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {e?.MovieGenres?.[0]?.Genre?.name}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 mt-3 flex justify-center gap-2">
-                      <button
-                        onClick={(e) => console.log(e)}
-                        className="opacity-60 hover:opacity-100"
-                      >
-                        <BinIcon />
-                      </button>
-
-                      <button
-                        id="picture"
-                        type="button"
-                        className="opacity-60 hover:opacity-100"
-                        onClick={handleOpenPicture}
-                      >
-                        <WriteEditIcon />
-                      </button>
-                      <ModalEditPicture
-                        show={openPicture}
-                        setClose={handleClosePicture}
-                      />
-                      <button
-                        id="video"
-                        type="button"
-                        className="opacity-60 hover:opacity-100"
-                        onClick={handleOpenVideo}
-                      >
-                        <MovieIcon />
-                      </button>
-                      <ModalEditVideo
-                        show={openVideo}
-                        setClose={handleCloseVideo}
-                      />
-                      <button
-                        id="trailer"
-                        type="button"
-                        className="opacity-60 hover:opacity-100"
-                        onClick={handleOpenTrailer}
-                      >
-                        <FilmIcon />
-                      </button>
-                      <ModalEditTrailer
-                        show={openTrailer}
-                        setClose={handleCloseTrailer}
-                      />
-                    </td>
-                  </tr>
-                ))}
+                {ListMovie.map((el) => {
+                  return (
+                    <MovieList
+                      key={el.id}
+                      id={el.id}
+                      cover={el.cover}
+                      name={el.name}
+                      el={el}
+                    />
+                  );
+                })}
               </tbody>
             </table>
           </div>
