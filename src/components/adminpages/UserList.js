@@ -13,13 +13,13 @@ export default function UserList({ user, userTransaction }) {
             {user.email}
           </td>
           <td className="whitespace-nowrap px-6 py-4 text-white ">
-            {user.isActive === true ? 'Active' : ''}
+            {user.isActive === true ? 'Active' : 'Inactive'}
           </td>
           <td className="whitespace-nowrap px-6 py-4 text-white ">
             <button className="text-white border-1  bg-red-600 px-7 py-1 rounded-lg mr-2 ">
               Block
             </button>
-            <Link to={'/adminSeeTransaction'} state={{ userTransaction }}>
+            <Link to={'/admin/transaction'} state={{ userTransaction }}>
               <button className="text-white border-1  bg-green-500 px-3 py-1 rounded-lg ml-5">
                 Transaction
               </button>

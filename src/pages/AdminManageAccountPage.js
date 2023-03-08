@@ -4,7 +4,7 @@ import { HomeLogo, SearchIcon } from '../images';
 import { useEffect, useState } from 'react';
 import UserList from '../components/adminpages/UserList';
 import * as adminApi from '../apis/admin-api';
-import SearchForm from '../components/adminpages/SearchForm';
+import UserSearchForm from '../components/adminpages/UserSearchForm';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../redux/authSlice';
@@ -13,7 +13,6 @@ export default function AdminManageAccountPage() {
   const [users, setUsers] = useState([]);
   const [showUser, setShowUser] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const dispatch = useDispatch();
   const accountListPerPage = 8;
   const lastIndex = currentPage * accountListPerPage;
   const firstIndex = lastIndex - accountListPerPage;
@@ -21,6 +20,7 @@ export default function AdminManageAccountPage() {
   const page = Math.ceil(showUser.length / accountListPerPage);
   const numbers = [...Array(page + 1).keys()].slice(1);
   const params = new URLSearchParams(window.location.search);
+  const dispatch = useDispatch();
   console.log(params.get('back'));
 
   const updateShowUser = (searchUser) => {
@@ -59,7 +59,7 @@ export default function AdminManageAccountPage() {
               <div className="flex items-center flex-row justify-end gap-3 mr-10 mt-8">
                 <MenuItemRight>
                   <SearchIcon />
-                  <SearchForm updateShowUser={updateShowUser} />
+                  <UserSearchForm updateShowUser={updateShowUser} />
                 </MenuItemRight>
               </div>
             </div>
@@ -69,25 +69,25 @@ export default function AdminManageAccountPage() {
           <div className="pt-10 w-[230px] pl-5 bg-zinc-800">
             <div>
               <div className="flex flex-row gap-3">
-                <div className="fill-white ">
+                {/* <div className="fill-white ">
                   <HomeLogo />
                 </div>
                 <Link to="#">
                   <p className="text-white mt-2">Home</p>
-                </Link>
+                </Link> */}
               </div>
               <div className="pl-11">
-                <Link to="/adminManageAccount">
+                <Link to="/admin/user">
                   <p className="text-white mt-2">Users</p>
                 </Link>
-                <Link to="/adminManageMovie">
+                <Link to="/admin/movie">
                   <p className="text-white mt-2">Movies</p>
                 </Link>
               </div>
             </div>
             <button
               onClick={() => dispatch(logout())}
-              className="text-white mt-4"
+              className="pl-11 text-white mt-8"
             >
               <p>Log out</p>
             </button>
