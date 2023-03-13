@@ -8,7 +8,7 @@ import AdminTransactionPage from '../pages/AdminTransactionPage';
 
 const router = createBrowserRouter([
   {
-    path: '/login',
+    path: '/',
     element: (
       <RedirectIfAuthenticate>
         <LoginAdminPage />
