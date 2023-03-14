@@ -6,6 +6,7 @@ import 'tw-elements';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import LoadingContextProvider from './contexts/LoadingContext';
+import MovieContextProvider from './contexts/MovieContext';
 // import { getAccessToken } from './utils/local-storage';
 // import { fetchAuthUser } from './redux/authSlice';
 
@@ -18,7 +19,9 @@ root.render(
   // <React.StrictMode>
   <Provider store={store}>
     <LoadingContextProvider>
-      <App />
+      <MovieContextProvider>
+        <App />
+      </MovieContextProvider>
     </LoadingContextProvider>
   </Provider>
   // </React.StrictMode>

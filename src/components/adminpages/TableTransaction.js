@@ -2,37 +2,18 @@ import { useState } from 'react';
 
 import { Link } from 'react-router-dom';
 
-const mockData = [
-  {
-    id: 1,
-    transactionId: 'T001',
-    packageId: 'P01',
-    startDate: '21-11-2022',
-    endDate: '09-03-2023',
-  },
-  {
-    id: 1,
-    transactionId: 'T002',
-    packageId: 'P02',
-    startDate: '21-11-2022',
-    endDate: '09-03-2023',
-  },
-  {
-    id: 1,
-    transactionId: 'T003',
-    packageId: 'P03',
-    startDate: '21-11-2022',
-    endDate: '09-03-2023',
-  },
-];
-
-export function TableTransaction() {
+export function TableTransaction({ transaction }) {
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
   const [currentPage, setCurrentPage] = useState(1);
-  const transactionListPerPage = 10;
+  const transactionListPerPage = 8;
   const lastIndex = currentPage * transactionListPerPage;
   const firstIndex = lastIndex - transactionListPerPage;
-  const ListTransaction = mockData.slice(firstIndex, lastIndex);
-  const page = Math.ceil(mockData.length / transactionListPerPage);
+  const ListTransaction = transaction.slice(firstIndex, lastIndex);
+  const page = Math.ceil(transaction.length / transactionListPerPage);
   const numbers = [...Array(page + 1).keys()].slice(1);
 
   return (
@@ -65,26 +46,29 @@ export function TableTransaction() {
 
               {/* bodytable */}
               <tbody>
-                {ListTransaction.map((item, name) => (
-                  <tr
-                    key={name}
-                    className="border-b transition duration-300 ease-in-out hover:bg-neutral-400 dark:border-neutral-500 dark:hover:bg-neutral-600 hover:bg-opacity-30 text-center text-white"
-                  >
-                    <td className="whitespace-nowrap px-6 py-4 ">{item.id}</td>
-                    <td className="whitespace-nowrap px-6 py-1 w-40">
-                      {item.transactionId}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {item.packageId}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {item.startDate}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {item.endDate}
-                    </td>
-                  </tr>
-                ))}
+                {ListTransaction.map((e) => {
+                  const startDate = new Date(e.start);
+                  const endDate = new Date(e.end);
+                  return (
+                    <tr className="border-b transition duration-300 ease-in-out hover:bg-neutral-400 dark:border-neutral-500 dark:hover:bg-neutral-600 hover:bg-opacity-30 text-center text-white">
+                      <td className="whitespace-nowrap px-6 py-4 ">
+                        {e.userId}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-1 w-40">
+                        {e.id}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        {e.packageId}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        {startDate.toLocaleString('en-US', options)}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        {endDate.toLocaleString('en-US', options)}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -96,8 +80,7 @@ export function TableTransaction() {
         <nav aria-label="Page navigation example">
           <ul className="inline-flex items-center -space-x-px">
             <li>
-              <Link
-                to="#"
+              <div
                 className="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white focus:text-blue-700 focus:bg-blue-100"
                 onClick={prePage}
               >
@@ -115,7 +98,7 @@ export function TableTransaction() {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-              </Link>
+              </div>
             </li>
             {numbers.map((n, i) => (
               <li key={i}>
@@ -130,8 +113,7 @@ export function TableTransaction() {
             ))}
 
             <li>
-              <Link
-                to="#"
+              <div
                 className="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white focus:text-blue-700 focus:bg-blue-100"
                 onClick={nextPage}
               >
@@ -149,7 +131,7 @@ export function TableTransaction() {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-              </Link>
+              </div>
             </li>
           </ul>
         </nav>
