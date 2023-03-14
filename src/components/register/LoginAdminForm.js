@@ -26,12 +26,12 @@ export default function LoginAdminForm() {
 
   return (
     <>
-      <div className="block p-6 rounded-lg shadow-lg bg-black/60  max-w-xl mt-28 mb-24 w-[600px} pt-[60px] px-[68px] pb-[40px]">
+      <div className="block p-6 rounded-lg shadow-lg bg-black/60  max-w-xl mt-28 mb-24 w-[430px] pt-[60px] px-[68px] pb-[40px]">
         <form>
           <div className="form-group mb-6">
             <label
               htmlFor="exampleInputEmail2"
-              className="form-label inline-block mb-2 text-white text-3xl font-bold ml-[60px]"
+              className="form-label inline-block mb-2 text-white text-3xl font-bold ml-24"
             >
               Admin
             </label>
@@ -44,7 +44,7 @@ export default function LoginAdminForm() {
             </label>
             <input
               type="email"
-              className="form-control  block   w-full  px-3   py-1.5   text-base   font-normal   text-gray-300   bg-gray-700 bg-clip-padding  border border-solid border-gray-300  rounded   m-0"
+              className="form-control  block   w-full  px-3   py-2.5   text-base   font-normal   text-gray-300   bg-gray-700 bg-clip-padding  border border-solid border-gray-300  rounded   m-0"
               id="exampleInputEmail2"
               aria-describedby="emailHelp"
               placeholder="Email or phone number"
@@ -55,7 +55,7 @@ export default function LoginAdminForm() {
           <div className="form-group mb-6">
             <input
               type="password"
-              className="form-control block   w-full   px-3    py-1.5  text-b  font-normal  text-gray-300   bg-gray-700 bg-clip-padding   border border-solid border-gray-300  rounded   m-0"
+              className="form-control block   w-full   px-3    py-2.5  text-b  font-normal  text-gray-300   bg-gray-700 bg-clip-padding   border border-solid border-gray-300  rounded   m-0"
               id="exampleInputPassword2"
               placeholder="Password"
               value={password}
@@ -65,7 +65,7 @@ export default function LoginAdminForm() {
           <div className="flex justify-between items-center mb-1">
             <button
               type="submit"
-              className="w-full  px-6   py-2.5  bg-red-600   text-white   font-medium   text-lg   leading-tight   rounded   shadow-md   transition   duration-150   ease-in-out mt-4"
+              className="w-full  px-6   py-3  bg-[#e50914]   text-white   font-medium   text-lg   leading-tight   rounded   shadow-md   transition   duration-150   ease-in-out mt-4"
               onClick={handleLogin}
             >
               Sign in
